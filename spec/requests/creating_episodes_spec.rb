@@ -3,9 +3,36 @@ require 'spec_helper'
 describe 'Creating episodes' do
 
   it 'returns 201 status code' do
-    post episodes_path,
-      episode: { title: 'Bananas', description: 'Learn about bananas.' },
-      format: 'json'
+
+=begin
+    # WORKS, but using the Mime Type as extension should be avoided.
+    post '/episodes.json',
+      episode: { title: 'Bananas', description: 'Learn about bananas.' }
+=end
+
+=begin
+    # WORKS, but hardcoding URI on tests should be avoided.
+    post '/episodes',
+      episode: { title: 'Bananas', description: 'Learn about bananas.' }, format: 'json'
+=end
+
+    # WORKS and it's what I would typically do.
+    post episodes_url,
+      episode: { title: 'Bananas', description: 'Learn about bananas.' }, format: 'json'
+
+=begin
+    # WORKS, and it's an alternative to using format: 'json'
+    #post episodes_url,
+      #{ episode: { title: 'Bananas', description: 'Learn about bananas.' }},
+      #{ 'HTTP_ACCEPT' => 'application/json' }
+=end
+
+=begin
+    # WORKS, and it's an alternative to hardcoding 'json'
+    post episodes_url,
+      { episode: { title: 'Bananas', description: 'Learn about bananas.' }},
+      { 'HTTP_ACCEPT' => Mime::JSON }
+=end
 
     # This fails initially if JSON format not specified.
     # expect(response).to be_success
@@ -17,10 +44,10 @@ describe 'Creating episodes' do
     expect(response).to be_success
     expect(response).to be_successful
 
-    # However.. we need to be a little more specific.
-    expect(response.status).to eq(201)
-    expect(response.header['Location']).to eq(episode_url(Episode.last))
-    expect(response.content_type).to eq(Mime::JSON)
+    # However.. we should to be a little more specific on what 'success' means.
+    expect(response.status).to eq(201) # proper code that indicates a new resource was created.
+    expect(response.header['Location']).to eq(episode_url(Episode.last)) # location of the newly created resouce.
+    expect(response.content_type).to eq(Mime::JSON) # the Mime Type of the response body.
     # Totally unnecessary. Just to show that a valid resource representation is returned in the message body.
     expect(Episode.new(JSON.parse(response.body))).to be_valid
   end
