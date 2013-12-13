@@ -1,0 +1,29 @@
+<h1>Listing zombies</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Age</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @zombies.each do |zombie| %>
+      <tr>
+        <td><%= zombie.name %></td>
+        <td><%= zombie.age %></td>
+        <td><%= link_to 'Show', zombie %></td>
+        <td><%= link_to 'Edit', edit_zombie_path(zombie) %></td>
+        <td><%= link_to 'Destroy', zombie, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Zombie', new_zombie_path %>
