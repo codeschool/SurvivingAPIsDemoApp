@@ -6,7 +6,9 @@ class ZombiesController < ApplicationController
   # GET /zombies.json
   def index
     @zombies = Zombie.all
-    respond_with(@zombies)
+    respond_with(@zombies) do |format|
+      format.apocalypse { render json: @zombies }
+    end
   end
 
   # GET /zombies/1
