@@ -17,8 +17,8 @@ describe 'Creating episodes' do
 =end
 
     # WORKS and it's what I would typically do.
-    post episodes_url,
-      episode: { title: 'Bananas', description: 'Learn about bananas.' }, format: 'json'
+    #post episodes_url,
+      #episode: { title: 'Bananas', description: 'Learn about bananas.' }, format: 'json'
 
 =begin
     # WORKS, and it's an alternative to using format: 'json'
@@ -27,12 +27,10 @@ describe 'Creating episodes' do
       #{ 'HTTP_ACCEPT' => 'application/json' }
 =end
 
-=begin
     # WORKS, and it's an alternative to hardcoding 'json'
     post episodes_url,
       { episode: { title: 'Bananas', description: 'Learn about bananas.' }},
       { 'HTTP_ACCEPT' => Mime::JSON }
-=end
 
     # This fails initially if JSON format not specified.
     # expect(response).to be_success
@@ -50,5 +48,35 @@ describe 'Creating episodes' do
     expect(response.content_type).to eq(Mime::JSON) # the Mime Type of the response body.
     # Totally unnecessary. Just to show that a valid resource representation is returned in the message body.
     expect(Episode.new(JSON.parse(response.body))).to be_valid
+  end
+
+  it 'apocalpyse' do
+    post episodes_url,
+      { episode: { title: 'Bananasssss', description: 'Learn about bananas.' }},
+      { 'ACCEPT' => 'application/vnd.apocalypse+json', 'App-Key' => '123123' }
+
+    expect(response.status).to eq(201) # proper code that indicates a new resource was created.
+    expect(response.content_type).to eq('application/vnd.apocalypse+json')
+
+    post episodes_url,
+      { episode: { title: 'Bananasssss', description: 'Learn about bananas.' }},
+      { 'HTTP_ACCEPT' => Mime::APOCALYPSE }
+
+    expect(response.status).to eq(201) # proper code that indicates a new resource was created.
+    expect(response.content_type).to eq(Mime::APOCALYPSE)
+
+    post episodes_url,
+      { episode: { title: 'Bananasssss', description: 'Learn about bananas.' }},
+      { 'HTTP_ACCEPT' => Mime::APOCALYPSE }
+
+    expect(response.status).to eq(201) # proper code that indicates a new resource was created.
+    expect(response.content_type).to eq(Mime::APOCALYPSE)
+
+    post episodes_url,
+      { episode: { title: 'Bananasssss', description: 'Learn about bananas.' }},
+      { 'HTTP_ACCEPT' => Mime::APOCALYPSE }
+
+    expect(response.status).to eq(201) # proper code that indicates a new resource was created.
+    expect(response.content_type).to eq(Mime::APOCALYPSE)
   end
 end
