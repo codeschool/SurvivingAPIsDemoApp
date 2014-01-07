@@ -7,7 +7,7 @@ class EpisodesController < ApplicationController
       if @episode.save
         format.html { redirect_to @episode, notice: 'Episode was successfully created.' }
         format.json { render action: 'show', status: :created, location: @episode }
-        format.apocalypse { render json: @episode, status: :created }
+        format.apocalypse { render json: params, status: :created }
       else
         raise 'NO'
         format.html { render action: 'new' }

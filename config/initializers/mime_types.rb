@@ -5,3 +5,5 @@
 # Mime::Type.register_alias "text/html", :iphone
 Mime::Type.register 'application/vnd.apocalypse+json', :apocalypse
 
+ActionDispatch::ParamsParser::DEFAULT_PARSERS[Mime::APOCALYPSE]= :json
+

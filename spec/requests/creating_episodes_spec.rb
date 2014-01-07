@@ -73,8 +73,12 @@ describe 'Creating episodes' do
     expect(response.content_type).to eq(Mime::APOCALYPSE)
 
     post episodes_url,
-      { episode: { title: 'Bananasssss', description: 'Learn about bananas.' }},
-      { 'HTTP_ACCEPT' => Mime::APOCALYPSE }
+      { episode: { title: 'Bananasssss', description: 'Learn about bananas.' }}.to_json,
+      { 'HTTP_ACCEPT' => Mime::APOCALYPSE , 'CONTENT_TYPE' => Mime::JSON.to_s }
+
+    post episodes_url,
+      { episode: { title: 'Bananasssss', description: 'Learn about bananas.' }}.to_json,
+      { 'HTTP_ACCEPT' => Mime::APOCALYPSE , 'CONTENT_TYPE' => Mime::APOCALYPSE.to_s }
 
     expect(response.status).to eq(201) # proper code that indicates a new resource was created.
     expect(response.content_type).to eq(Mime::APOCALYPSE)
