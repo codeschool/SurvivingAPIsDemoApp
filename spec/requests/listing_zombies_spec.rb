@@ -20,7 +20,8 @@ describe "Listing Zombies" do
         get api_zombies_url(weapon: 'axe')
         expect(response.status).to be(200)
 
-        zombies = JSON.parse(response.body, symbolize_names: true)
+        #zombies = JSON.parse(response.body, symbolize_names: true)
+        zombies = json(response.body)
         names = zombies.collect { |z| z[:name] }
         expect(names).to include('John')
         expect(names).to_not include('Joanna')
@@ -31,7 +32,8 @@ describe "Listing Zombies" do
         get api_zombie_url(zombie)
         expect(response.status).to be(200)
 
-        zombie_response = JSON.parse(response.body, symbolize_names: true)
+        #zombie_response = JSON.parse(response.body, symbolize_names: true)
+        zombie_response = json(response.body)
         expect(zombie_response[:name]).to eq(zombie.name)
       end
     end
