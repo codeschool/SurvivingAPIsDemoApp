@@ -1,13 +1,16 @@
 class ZombiesController < ApplicationController
   before_action :set_zombie, only: [:show, :edit, :update, :destroy]
-  respond_to :apocalypse
+  respond_to :html, :apocalypse, :json, :xml
 
   # GET /zombies
   # GET /zombies.json
   def index
     @zombies = Zombie.all
     respond_with(@zombies) do |format|
+      format.html
       format.apocalypse { render json: @zombies }
+      format.json { render json: @zombies }
+      format.xml { render xml: @zombies }
     end
   end
 
