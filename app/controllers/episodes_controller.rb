@@ -1,4 +1,10 @@
 class EpisodesController < ApplicationController
+  respond_to :apocalypse, :json
+
+  def index
+    @episodes = Episode.all
+    respond_with(@episodes)
+  end
 
   def create
     @episode = Episode.new(episode_params)
