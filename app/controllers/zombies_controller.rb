@@ -8,8 +8,8 @@ class ZombiesController < ApplicationController
     @zombies = Zombie.all
     respond_with(@zombies) do |format|
       format.html
+      format.json
       format.apocalypse { render json: @zombies }
-      format.json { render json: @zombies }
       format.xml { render xml: @zombies }
     end
   end

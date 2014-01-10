@@ -19,5 +19,5 @@
 # To learn more, please read the Rails Internationalization guide
 # available at http://guides.rubyonrails.org/i18n.html.
 
-en:
-  warning_message: 'Watch out for %{name}!'
+pt-BR:
+  warning_message: 'Cuidado com %{name}!'

@@ -42,4 +42,10 @@ end
 # gem 'capistrano', group: :development
 
 # Use debugger
-# gem 'debugger', group: [:development, :test]
+gem 'debugger', group: [:development, :test]
+
+group :development, :test do
+  gem 'rspec-rails', '2.14.0'
+end
+
+gem 'http_accept_language'

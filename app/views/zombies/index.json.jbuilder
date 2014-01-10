@@ -1,4 +1,4 @@
 json.array!(@zombies) do |zombie|
-  json.extract! zombie, :name, :age
-  json.url zombie_url(zombie, format: :json)
+  json.extract! zombie, :id, :name, :age
+  json.warning_message I18n.t('warning_message', name: zombie.name)
 end
