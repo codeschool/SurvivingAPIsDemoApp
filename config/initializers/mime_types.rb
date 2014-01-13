@@ -3,4 +3,6 @@
 # Add new mime types for use in respond_to blocks:
 # Mime::Type.register "text/richtext", :rtf
 # Mime::Type.register_alias "text/html", :iphone
-Mime::Type.register_alias 'application/vnd.apocalypse+json', :apocalypse
+Mime::Type.register 'application/vnd.apocalypse.v1+json', :apocalypse_v1
+Mime::Type.register 'application/vnd.apocalypse.v2+json', :apocalypse_v2
+
