@@ -4,7 +4,12 @@ class ApiVersion
   end
 
   def matches?(request)
-    @default || matches_version?(request)
+    if @default
+      # TODO: anyway to remove duplication ?
+      request.headers['Accept'] = 'application/vnd.apocalypse.v2+json'
+    else
+      matches_version?(request)
+    end
   end
 
 
