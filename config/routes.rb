@@ -8,7 +8,7 @@ BananaPodcast::Application.routes.draw do
       end
     end
 
-    constraints ApiVersion.new('v2') do
+    constraints ApiVersion.new('v2', true) do
       scope module: :v2 do
         resources :zombies
       end

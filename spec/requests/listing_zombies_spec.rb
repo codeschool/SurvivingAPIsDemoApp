@@ -34,4 +34,12 @@ describe 'Listing Zombies' do
       expect(response).to be_success
     end
   end
+
+  context 'no version' do
+    xit 'defaults to v2' do
+      get "/zombies/#{joanna.id}", {}, {}
+      expect(response.content_type).to eq(Mime::APOCALYPSE_V2.to_s)
+      expect(response).to be_success
+    end
+  end
 end
