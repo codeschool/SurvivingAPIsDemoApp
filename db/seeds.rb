@@ -5,3 +5,6 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+Zombie.destroy_all
+Zombie.create!(name: 'Joanna', age: 123, weapon: 'axe')
+Zombie.create!(name: 'John', age: 91, weapon: 'shotgun')
