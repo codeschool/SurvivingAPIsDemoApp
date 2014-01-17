@@ -28,9 +28,9 @@ describe 'Creating episodes' do
 =end
 
     # WORKS, and it's an alternative to hardcoding 'json'
-    post episodes_url,
-      { episode: { title: 'Bananas', description: 'Learn about bananas.' }},
-      { 'HTTP_ACCEPT' => Mime::JSON }
+    post '/episodes',
+      { episode: { title: 'Bananas', description: 'Learn about bananas.' }}.to_json,
+      { 'HTTP_ACCEPT' => Mime::JSON, 'CONTENT_TYPE' => Mime::JSON.to_s }
 
     # This fails initially if JSON format not specified.
     # expect(response).to be_success
@@ -82,5 +82,16 @@ describe 'Creating episodes' do
 
     expect(response.status).to eq(201) # proper code that indicates a new resource was created.
     expect(response.content_type).to eq(Mime::APOCALYPSE)
+  end
+
+  context 'invalid episodes' do
+    it 'returns error' do
+      post '/episodes',
+        { episode: { title: nil, description: 'Learn about bananas.' }}.to_json,
+        { 'HTTP_ACCEPT' => Mime::JSON, 'CONTENT_TYPE' => Mime::JSON.to_s }
+
+      expect(response.status).to eq(422)
+      expect(response.content_type).to eq(Mime::JSON)
+    end
   end
 end
