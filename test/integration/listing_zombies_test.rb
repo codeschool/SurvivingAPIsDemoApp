@@ -1,31 +1,46 @@
-# DEPRECATED
-# see tests instead.
-#
+require 'test_helper'
 
-require 'spec_helper'
+class ListingZombies < ActionDispatch::IntegrationTest
+  setup do
+    host! 'api.example.com'
+  end
 
+  test 'returns list of all zombies' do
+    get '/zombies'
+    assert_equal 200, response.status
+    assert response.success?
+    assert response.successful?
+    refute_empty response.body
+  end
+
+  test 'returns zombies filtered by weapon' do
+    john = Zombie.create!(name: 'John', weapon: 'axe')
+    joanna = Zombie.create!(name: 'Joanna', weapon: 'shotgun')
+
+    get '/zombies?weapon=axe'
+    assert response.success?
+
+    zombies = json(response.body)
+    names = zombies.collect { |z| z[:name] }
+    assert_includes names, 'John'
+    refute_includes names, 'Joanna'
+  end
+
+  test 'returns zombie by id' do
+    zombie = Zombie.create!(name: 'Joanna', weapon: 'axe')
+    get "/zombies/#{zombie.id}"
+    assert response.success?
+
+    zombie_response = json(response.body)
+    assert_equal zombie.name, zombie_response[:name]
+  end
+end
+
+=begin
 describe "Listing Zombies" do
 
   describe "GET /zombies" do
-
-    context 'with path' do
-
-      before do
-        # this is needed if you are using subdomain
-        # and passing the path as a string
-        host! 'api.example.com'
-      end
-
-      it "returns successful response with path" do
-        get '/zombies'
-        expect(response.status).to be(200)
-        expect(response).to be_success
-        expect(response).to be_successful
-        expect(response.body).to_not be_empty
-      end
-    end
-
-    it "returns successful response with route helper" do
+    it "returns successful response" do
       get api_zombies_url
       expect(response.status).to be(200)
       expect(response).to be_success
@@ -60,6 +75,6 @@ describe "Listing Zombies" do
       end
     end
   end
-
 end
+=end
 

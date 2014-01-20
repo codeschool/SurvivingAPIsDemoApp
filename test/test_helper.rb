@@ -1,6 +1,7 @@
 ENV["RAILS_ENV"] ||= "test"
 require File.expand_path('../../config/environment', __FILE__)
 require 'rails/test_help'
+require 'minitest/pride'
 
 class ActiveSupport::TestCase
   ActiveRecord::Migration.check_pending!
@@ -12,4 +13,7 @@ class ActiveSupport::TestCase
   fixtures :all
 
   # Add more helper methods to be used by all tests here...
+  def json(body)
+    JSON.parse(body, symbolize_names: true)
+  end
 end
