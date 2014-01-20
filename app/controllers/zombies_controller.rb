@@ -1,6 +1,6 @@
 class ZombiesController < ApplicationController
   before_action :set_zombie, only: [:show, :edit, :update, :destroy]
-  respond_to :html, :apocalypse, :json, :xml
+  respond_to :html, :json, :xml
 
   # GET /zombies
   # GET /zombies.json
@@ -9,7 +9,6 @@ class ZombiesController < ApplicationController
     respond_with(@zombies) do |format|
       format.html
       format.json
-      format.apocalypse { render json: @zombies }
       format.xml { render xml: @zombies }
     end
   end
