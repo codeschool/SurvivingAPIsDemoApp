@@ -22,6 +22,25 @@ class EpisodesController < ApplicationController
     end
   end
 
+  def update
+    episode = Episode.find(params[:id])
+    respond_to do |format|
+      if episode.update(episode_params)
+        format.json { render json: episode, status: 200 }
+      else
+        format.json { render json: episode.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def destroy
+    episode = Episode.find(params[:id])
+    episode.destroy!
+    #render nothing: true, status: 204 # :no_content
+    # or
+    head 204
+  end
+
   private
 
     def episode_params
