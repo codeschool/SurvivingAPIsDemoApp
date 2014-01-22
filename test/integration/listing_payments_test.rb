@@ -2,9 +2,8 @@ require 'test_helper'
 
 class ListingPaymentsTest < ActionDispatch::IntegrationTest
   setup do
-    password = 'secret'
-    @user = User.create!(username: 'foobar',
-                         password: password, password_confirmation: password)
+    @user = User.create!(username: 'foo',
+                         password: 'secret', password_confirmation: 'secret')
     @user.payments.create!(amount: 99.99)
   end
 
@@ -12,9 +11,12 @@ class ListingPaymentsTest < ActionDispatch::IntegrationTest
     User.destroy_all
   end
 
+  def encode(username, password)
+    ActionController::HttpAuthentication::Basic.encode_credentials(username, password)
+  end
+
   test 'valid username and password' do
-    auth = ActionController::HttpAuthentication::Basic.encode_credentials(@user.username, @user.password)
-    get '/payments', {}, { 'Authorization' =>  auth }
+    get '/payments', {}, { 'Authorization' => encode(@user.username, @user.password) }
     assert_equal 200, response.status
   end
 
@@ -24,14 +26,12 @@ class ListingPaymentsTest < ActionDispatch::IntegrationTest
   end
 
   test 'invalid username' do
-    auth = ActionController::HttpAuthentication::Basic.encode_credentials('', @user.password)
-    get '/payments', {}, { 'Authorization' =>  auth }
+    get '/payments', {}, { 'Authorization' => encode('', @user.password) }
     assert_equal 401, response.status
   end
 
   test 'invalid password' do
-    auth = ActionController::HttpAuthentication::Basic.encode_credentials(@user.username, '')
-    get '/payments', {}, { 'Authorization' =>  auth }
+    get '/payments', {}, { 'Authorization' => encode(@user.username, '') }
     assert_equal 401, response.status
   end
 end
