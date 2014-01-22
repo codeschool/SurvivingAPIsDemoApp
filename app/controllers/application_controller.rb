@@ -9,11 +9,12 @@ class ApplicationController < ActionController::Base
     end
 
     def current_user
-      @current_user ||= User.find_by(auth_token: auth_token)
-    end
-
-    def auth_token
-      request.headers['USER_AUTH_TOKEN']
+      @current_user ||= begin
+                          authenticate_with_http_basic do |username, password|
+                            user = User.find_by(username: username)
+                            user && user.authenticate(password)
+                          end
+                        end
     end
 
     def render_unauthorized
