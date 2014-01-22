@@ -1,3 +1,3 @@
 BananaPodcast::Application.routes.draw do
-  resources :payments
+  resources :episodes
 end
