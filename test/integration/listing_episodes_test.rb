@@ -7,9 +7,7 @@ class ListingEpisodesTest < ActionDispatch::IntegrationTest
     @token = ActionController::HttpAuthentication::Token.encode_credentials(@user.auth_token)
   end
 
-  teardown do
-    User.destroy_all
-  end
+  teardown { User.destroy_all }
 
   # Show this example first
   test 'valid authentication with manual token' do
@@ -25,10 +23,9 @@ class ListingEpisodesTest < ActionDispatch::IntegrationTest
     assert_equal Mime::JSON, response.content_type
   end
 
-
   test 'invalid authentication' do
     get '/episodes', {}, { 'Authorization' => @token + 'fake' }
     assert_equal 401, response.status
-    #assert_equal Mime::JSON, response.content_type :(
   end
 end
+
