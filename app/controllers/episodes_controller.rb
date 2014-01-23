@@ -1,6 +1,6 @@
 class EpisodesController < ApplicationController
-  skip_before_action :authenticate, only: :show
-  before_action :authenticate_manual, only: :show
+  before_action :authenticate_or_request, only: :index
+  before_action :authenticate, only: :show
 
   def index
     render json: [], status: 200
@@ -11,11 +11,23 @@ class EpisodesController < ApplicationController
   end
 
   protected
-    def authenticate_manual
-      token = ActionController::HttpAuthentication::Token.token_and_options(request).first
-      user = User.find_by(auth_token: token)
-      unless user
-        render json: 'Bad credentials', status: 401 and return false
+    def authenticate_or_request
+      authenticate_or_request_with_http_token do |token, options|
+        User.find_by(auth_token: token)
       end
+    end
+
+    def authenticate
+      authenticate_token || render_unauthorized
+    end
+
+    def authenticate_token
+      authenticate_with_http_token do |token, options|
+        User.find_by(auth_token: token)
+      end
+    end
+
+    def render_unauthorized
+      render json: 'Bad credentials', status: 401
     end
 end
