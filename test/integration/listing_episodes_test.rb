@@ -27,5 +27,11 @@ class ListingEpisodesTest < ActionDispatch::IntegrationTest
     get '/episodes', {}, { 'Authorization' => @token + 'fake' }
     assert_equal 401, response.status
   end
+
+  test 'manual token fetching' do
+    get '/episodes/1', {}, { 'Authorization' => @token + 'fake' }
+    assert_equal 401, response.status
+    assert_equal Mime::JSON, response.content_type
+  end
 end
 
