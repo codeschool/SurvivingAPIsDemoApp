@@ -1,3 +1,5 @@
 BananaPodcast::Application.routes.draw do
-  resources :episodes
+  resources :episodes do
+    get :preview, on: :collection
+  end
 end

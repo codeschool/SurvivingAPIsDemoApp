@@ -30,6 +30,12 @@ class ListingPaymentsTest < ActionDispatch::IntegrationTest
     assert_equal Mime::HTML, response.content_type
   end
 
+  test 'invalid access sets WWW-Authenticate to Application realm' do
+    get '/episodes', {}, { 'Authorization' => encode('', @user.password) }
+    assert_equal 401, response.status
+    assert_equal 'Basic realm="Application"', response.headers['WWW-Authenticate']
+  end
+
   test 'invalid password' do
     get '/episodes', {}, { 'Authorization' => encode(@user.username, '') }
     assert_equal 401, response.status
@@ -40,5 +46,17 @@ class ListingPaymentsTest < ActionDispatch::IntegrationTest
     get '/episodes/1', {}, { 'Authorization' => encode(@user.username, '') }
     assert_equal 401, response.status
     assert_equal Mime::JSON, response.content_type
+  end
+
+  test 'invalid access sets WWW-Authenticate to Preview realm' do
+    get '/episodes/preview', {}, { 'Authorization' => encode('', @user.password) }
+    assert_equal 401, response.status
+    assert_equal 'Basic realm="Preview"', response.headers['WWW-Authenticate']
+  end
+
+  test 'invalid access sets WWW-Authenticate to Banana realm' do
+    get '/episodes/1/edit', {}, { 'Authorization' => encode('', @user.password) }
+    assert_equal 401, response.status
+    assert_equal 'Basic realm="Banana"', response.headers['WWW-Authenticate']
   end
 end
