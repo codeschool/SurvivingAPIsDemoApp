@@ -23,9 +23,10 @@ class ListingEpisodesTest < ActionDispatch::IntegrationTest
     assert_equal Mime::JSON, response.content_type
   end
 
-  test 'invalid authentication' do
+  test 'invalid authentication sets WWWW-Authenticate to Application' do
     get '/episodes', {}, { 'Authorization' => @token + 'fake' }
     assert_equal 401, response.status
+    assert_equal 'Token realm="Application"', response.headers['WWW-Authenticate']
   end
 
   test 'manual token fetching' do
@@ -33,5 +34,18 @@ class ListingEpisodesTest < ActionDispatch::IntegrationTest
     assert_equal 401, response.status
     assert_equal Mime::JSON, response.content_type
   end
+
+  test 'invalid authentication sets WWWW-Authenticate to Preview' do
+    get '/episodes/preview', {}, { 'Authorization' => @token + 'fake' }
+    assert_equal 401, response.status
+    assert_equal 'Token realm="Preview"', response.headers['WWW-Authenticate']
+  end
+
+  test 'invalid authentication sets WWWW-Authenticate to Banana' do
+    get '/episodes/1/edit', {}, { 'Authorization' => @token + 'fake' }
+    assert_equal 401, response.status
+    assert_equal 'Token realm="Banana"', response.headers['WWW-Authenticate']
+  end
+
 end
 
