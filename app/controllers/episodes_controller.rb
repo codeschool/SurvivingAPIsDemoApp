@@ -38,7 +38,7 @@ class EpisodesController < ApplicationController
     episode.destroy!
     #render nothing: true, status: 204 # :no_content
     # or
-    head 204
+    head :no_content
   end
 
   private
