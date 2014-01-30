@@ -7,14 +7,14 @@ class ChangingApiVersionsTest < ActionDispatch::IntegrationTest
   end
 
   test 'returns version one via Accept header' do
-    get '/zombies', {}, { 'REMOTE_ADDR' => @ip, 'HTTP_ACCEPT' => 'application/vnd.apocalypse.v1+json' }
+    get '/zombies', {}, { 'REMOTE_ADDR' => @ip, 'Accept' => 'application/vnd.apocalypse.v1+json' }
     assert_equal 200, response.status
     assert_equal "#{@ip} Version One!", response.body
     assert_equal Mime::JSON, response.content_type
   end
 
   test 'returns version two via Accept header' do
-    get '/zombies', {}, { 'REMOTE_ADDR' => @ip, 'HTTP_ACCEPT' => 'application/vnd.apocalypse.v2+json' }
+    get '/zombies', {}, { 'REMOTE_ADDR' => @ip, 'Accept' => 'application/vnd.apocalypse.v2+json' }
     assert_equal 200, response.status
     assert_equal "#{@ip} Version Two!", response.body
     assert_equal Mime::JSON, response.content_type
