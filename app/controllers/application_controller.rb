@@ -8,7 +8,7 @@ class ApplicationController < ActionController::Base
 
   protected
     def set_locale
-      #I18n.locale = request.env['HTTP_ACCEPT_LANGUAGE'] # naive
+      #I18n.locale = request.env['Accept-Language'] # naive
       I18n.locale = http_accept_language.compatible_language_from(I18n.available_locales) # better!
     end
 end
