@@ -1,13 +1,22 @@
 class ZombiesController < ApplicationController
-  before_action :set_zombie, only: [:show, :edit, :update, :destroy]
-  respond_to :html, :json, :xml
+  before_action :set_locale_with_gem, only: :index
+  before_action :set_locale_with_no_gem, only: :show
+
+  def set_locale_with_gem
+    I18n.locale = http_accept_language.compatible_language_from(I18n.available_locales)
+  end
+  protected :set_locale_with_gem
+
+  def set_locale_with_no_gem
+    I18n.locale = request.headers['Accept-Language']
+  end
+  protected :set_locale_with_no_gem
 
   # GET /zombies
   # GET /zombies.json
   def index
     @zombies = Zombie.all
-    respond_with(@zombies) do |format|
-      format.html
+    respond_to do |format|
       format.json
       format.xml { render xml: @zombies }
     end
@@ -16,6 +25,11 @@ class ZombiesController < ApplicationController
   # GET /zombies/1
   # GET /zombies/1.json
   def show
+    @zombie = Zombie.first
+    respond_to do |format|
+      format.json
+      format.xml
+    end
   end
 
   # GET /zombies/new
@@ -68,11 +82,6 @@ class ZombiesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_zombie
-      @zombie = Zombie.find(params[:id])
-    end
-
     # Never trust parameters from the scary internet, only allow the white list through.
     def zombie_params
       params.require(:zombie).permit(:name, :age)
