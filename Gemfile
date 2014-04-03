@@ -44,5 +44,5 @@ end
 # gem 'capistrano', group: :development
 
 # Use debugger
-gem 'debugger', '1.6.5', group: [:development, :test]
+gem 'debugger', '1.6.6', group: [:development, :test]
 
